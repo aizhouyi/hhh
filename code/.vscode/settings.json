@@ -1,0 +1,14 @@
+{
+    "python.pythonPath": "/home/z/.virtualenvs/temp/bin/python",
+    "sqltools.connections": [
+        {
+            "database": "shop",
+            "dialect": "MariaDB",
+            "name": "wrng",
+            "password": "zz",
+            "port": 3306,
+            "server": "localhost",
+            "username": "mom"
+        }
+    ]
+}
