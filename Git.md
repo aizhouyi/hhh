@@ -136,7 +136,7 @@
            | :-----: | :----------------------------------------------------------: |
            | --hard  | Resets the index and working tree. Any changes to tracked files in the working tree since <commit>are discarded. **<u>重置索引区和工作区</u>**。自commit以来工作区的任何更改都将被丢弃。**<u>同时也本地库移动head指针</u>**，此时的状态是理想状态。<br />*结果是暂存区，工作区和仓库全部变动。* |
            | --mixed | Resets the index but not the working tree (i.e., the changed files are preserved but not marked for commit) and reports what has not been updated. This is the default action. If **-N** is specified, removed paths are marked as intent-to-add (see **git-add**(1)) .**<u>重置暂存区但是不触碰工作区，本地仓库指针移动。保留上次的提交在工作区，上次的提交不会回到暂存区</u>**。多出红色。<br />*结果是仓库和暂存区变动。* |
-       | --soft  | Does not touch the index file or the working tree at all (but resets the head to <commit>, just like all modes do). This leaves all your changed files "Changes to be committed", as git status would put it.不会碰触暂存区和工作区文件。**<u>仅仅就是把本地仓库指针移动</u>**，就是取消上一步的commit操作。相**<u>对来说仓库回退一步的话，上次的提交又回到暂存区</u>**，就变成要提交的更改（Changes to be committed）多出绿色。<br />*结果是只有仓库变动* |
+           | --soft  | Does not touch the index file or the working tree at all (but resets the head to <commit>, just like all modes do). This leaves all your changed files "Changes to be committed", as git status would put it.不会碰触暂存区和工作区文件。**<u>仅仅就是把本地仓库指针移动</u>**，就是取消上一步的commit操作。相**<u>对来说仓库回退一步的话，上次的提交又回到暂存区</u>**，就变成要提交的更改（Changes to be committed）多出绿色。<br />*结果是只有仓库变动* |
   
   15. 这时候，我们完完全全来理解一遍，定义有变更就是0变成1，初始状态是000
   
@@ -227,18 +227,19 @@
    
 2. `git remote`添加别名
    有https和ssh两种，先说https的
-   那么每次对应的就是形如https://github.com/username/reponame.git，类似这样的URL，但是每次都不想要打这么多，git是可以帮我们记住这些信息的，`git remote <别名> <实际地址>`命令
-   `git remote add origin https://github.com/username/repo.git`意思就是添加一个别名为origin的https://github.com/username/repo.git的地址
+   那么每次对应的就是形如`https://github.com/username/reponame.git`
+   类似这样的URL，但是每次都不想要打这么多，git是可以帮我们记住这些信息的
+   `git remote add origin https://github.com/username/repo.git`意思就是添加一个别名为origin对应着`https://github.com/username/repo.git`的地址
    操作完成是这样的
-   ![](./Git.assets/Screenshot_20191112_154225-1573544607889.png)
-
+![](./Git.assets/Screenshot_20191112_154225-1573544607889.png)
+   
 3. 推送到远程仓库
 
    `git push origin master`意思就是推送到origin，推送内容是本地仓库的master分支
    ![Screenshot_20191112_160343](./Git.assets/Screenshot_20191112_160343.png)
 
 4. 从远程库克隆
-   当然是要在另外一个新目录下，执行`git clone ` https://github.com/aizhouyi/code.git
+   当然是要在另外一个新目录下，执行`git clone https://github.com/aizhouyi/code.git`
    那么就是从远程库克隆到本地，这个克隆下来的其实已经完成了三点：
    
    1. 完整的下载远程库到本地
@@ -378,7 +379,9 @@ graph TB
 ![](./Git.assets/深度截图_选择区域_20191114110809.png)也就是注册github时候的username，其实设置成一样就一定没有问题
 
 8. GPG签名
-1. `gpg --list-secret-keys --keyid-format LONG`来查看本机，格式是LONG
+
+   1. `gpg --list-secret-keys --keyid-format LONG`来查看本机，格式是LONG
+
    2. 没有就需要生成全新的gpg密钥
    使用`gpg --full-generate-key`来生成，接下来的选择加密方式，位长度选择，密钥的有效期限，确认生成。接着输入信息来构建用户标识来确认密钥，包括有姓名，邮箱（这个邮箱必须和github上经过验证的一样），注释，最后确定。
    3. 接下来是这一步是选择是否输入密码来保护这个密钥，该密码可以为空。到这里完整的gpg密钥生成完毕
