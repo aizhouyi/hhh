@@ -282,7 +282,7 @@
    2. `ssh-keygen -t rsa -b 4096 -C "your_email@example.com"`生成全新的SSH密钥，-t选择加密算法rsa，-b bits，4096位，-C 注释说明，不是必须的，一般用邮箱
       输入密钥的路径和文件名，输入ssh的密钥密码，这个密码可以为空
 
-   3. `ssh-keygen -p`，修改这个ssh的私匙，这个不需要可以跳过，直接到下一步
+   3. `ssh-keygen -p`，修改这个ssh的密码，这个不需要可以跳过，直接到下一步
 
    4. 将新的ssh密钥添加到ssh-agent管理（这个设置了.ssh/config文件可以跳过，直接下一步）
       `eval "$(ssh-agent -s)"`意为后台启动ssh代理，或者`ssh-agent bash`
@@ -380,14 +380,28 @@ graph TB
 
 8. GPG签名
 
-   1. `gpg --list-secret-keys --keyid-format LONG`来查看本机，格式是LONG
+   1. `gpg --list-secret-keys --keyid-format LONG`来查看本机的gpg，格式是LONG
 
-   2. 没有就需要生成全新的gpg密钥
-   使用`gpg --full-generate-key`来生成，接下来的选择加密方式，位长度选择，密钥的有效期限，确认生成。接着输入信息来构建用户标识来确认密钥，包括有姓名，邮箱（这个邮箱必须和github上经过验证的一样），注释，最后确定。
+   2. 想要使用新的或者没有，就需要生成全新的gpg密钥
+     使用`gpg --full-generate-key`来生成，接下来的选择加密方式，位长度选择，密钥的有效期限，确认生成。接着输入信息来构建用户标识来确认密钥，包括有姓名，邮箱（这个邮箱必须和github上经过验证的一样），注释，最后确定。
+   
    3. 接下来是这一步是选择是否输入密码来保护这个密钥，该密码可以为空。到这里完整的gpg密钥生成完毕
-   4. 然后就是添加gpg公钥去github账户上，账户的安全选项里去找到GPG，添加即可
-   5. 然后我们需要告诉git我们需要启用gpg，并且要告诉其gpg的key id
-   `git config commit.gpgSign True`
-   `git config user.signingKey` key_id
+   
+   4. 然后就是添加gpg公钥去github账户上
+      账户的安全选项里去找到GPG key，添加即可
+      `gpg --list-secret-keys --keyid-format LONG`查看key_id，记住这个key_id
+      `gpg --armor --output ./pub.gpg --export` key_id，以ASCII封装格式导出到pub.gpg文件中，把该文件打开直接全选复制粘贴即可
+      `gpg --import .gpg`
+   
+   5. 然后我们需要告诉git我们需要启用gpg，并且要告诉其gpg的key id，在bsah也要配置
+     `git config commit.gpgSign True`
+     `git config user.signingKey` key_id
+   
+     ```shell
+     $ test -r ~/.bash_profile && echo 'export GPG_TTY=$(tty)' >> ~/.bash_profile
+     $ echo 'export GPG_TTY=$(tty)' >> ~/.profile
+     ```
+   
    6. 最后提一句，一个gpg密钥文件是可以关联多个经过github账户验证的邮件的
-   于是在commit到本地库的时候，根据user.email和gpg的邮箱，github经过验证的邮箱，这三个邮箱必须一致才可以得到验证通过，得到一个绿色的V，证明这一定就是作者本人
+     于是在commit到本地库的时候，根据user.email和gpg的邮箱，github经过验证的邮箱，这三个邮箱必须一致才可以得到验证通过，得到一个绿色的V，证明这一定就是作者本人
+     `gpg --edit-key`命令可以修改更加详细，这个不常用，因为我要修改我直接生成一个新的算了。。。。多查看help文档就会了
