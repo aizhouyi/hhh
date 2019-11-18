@@ -195,24 +195,21 @@
      1.  这两个分支合并的时候，`git merge master`会产生这样的提示
         ![Screenshot_20191110_203110](./Git.assets/Screenshot_20191110_203110.png)
         conflict(content)
-        
      2. 此时查看工作区文件，就会变的有点奇怪了（如果是集中式svn的话，产生冲突的时候就会产生很多文件，但是git仍旧是一个，只是这个文件的样子奇怪
         Git是以行为单位管理文件，于是冲突产生了，第二行
         ![Screenshot_20191110_203408](./Git.assets/Screenshot_20191110_203408.png)
         Git用`<<<<<<<`，`=======`，`>>>>>>>`标记出不同分支的内容
         HEAD是当前指针，master则是指的master分支指针
-        ​            这就是当前分支的![](./Git.assets/深度截图_选择区域_20191111160927.png)
-        ​
-        ​            这就是master分支的![](./Git.assets/深度截图_选择区域_20191111171518.png)
-        ​         3. 于是我们就需要协商一下，到底如何处理这个文件
-        ​            我们处理好文件，也就是把把这个文件修改成我们想要的样子，再看`git status`![Screenshot_20191111_184130](./Git.assets/Screenshot_20191111_184130.png)
-        ​             于是我们执行`git add bb.txt`，再次查看状态就是
-        ​            ![Screenshot_20191111_184454](./Git.assets/Screenshot_20191111_184454.png)
-        ​            这里接下来的提交不可以带有文件名。
-        ​            （否则就是报错
+        这就是当前new分支的![](./Git.assets/深度截图_选择区域_20191111160927.png)
+        ​这就是master分支的![](./Git.assets/深度截图_选择区域_20191111171518.png)
+     3.  于是我们就需要协商一下，到底如何处理这个文件
+        我们处理好文件，也就是把把这个文件修改成我们想要的样子，再看`git status`![Screenshot_20191111_184130](./Git.assets/Screenshot_20191111_184130.png)
+        于是我们执行`git add bb.txt`，再次查看状态就是
+         ![Screenshot_20191111_184454](./Git.assets/Screenshot_20191111_184454.png)
+        这里接下来的提交不可以带有文件名。（否则就是报错
         ​            ![Screenshot_20191111_184841](./Git.assets/Screenshot_20191111_184841.png)）
-        ​            直接使用`git commit`命令就完成了合并
-        ​            `git branch -v`查看哈希值是一模一样的
+        直接使用`git commit`命令就完成了合并
+        `git branch -v`查看哈希值是一模一样的
 
 #### 远程库操作
 
@@ -294,14 +291,14 @@
       ssh-agent -s # 生成Bourne shell 风格的命令输出
       ssh-agent bash 和 `eval "$(ssh-agent -s)"`一样的
       ssh-add 语法
-ssh-add [-cDdLlXx] [-t life] [file ...]
+      ssh-add [-cDdLlXx] [-t life] [file ...]
       ssh-add -s pkcs11
-ssh-add -e pkcs11
+      ssh-add -e pkcs11
       选项
       -D：删除ssh-agent中的所有密钥.
-   -d：从ssh-agent中的删除密钥
+      -d：从ssh-agent中的删除密钥
       -e pkcs11：删除PKCS#11共享库pkcs1提供的钥匙。
-   -s pkcs11：添加PKCS#11共享库pkcs1提供的钥匙。
+      -s pkcs11：添加PKCS#11共享库pkcs1提供的钥匙。
       -L：显示ssh-agent中的公钥
       -l：显示ssh-agent中的密钥
       -t life：对加载的密钥设置超时时间，超时ssh-agent将自动卸载密钥
